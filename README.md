@@ -7,8 +7,7 @@
 
 ## It looks like this
 
-![HTML Template](https://github.com/aloner-pro/GitaMail/blob/main/SS.png?raw=true)
-
+![HTML Template](https://github.com/sam-913/GitaMail-Samsiddhi/blob/d9625d3016c67e5847fed02f955d5143f8fe5338/demo_MAIL.png)
 ### To know more, you know where to reach us
 
 #### Contributers
