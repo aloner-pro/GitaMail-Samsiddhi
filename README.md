@@ -7,7 +7,7 @@
 
 ## It looks like this
 
-![HTML Template](https://github.com/sam-913/GitaMail-Samsiddhi/blob/d9625d3016c67e5847fed02f955d5143f8fe5338/demo_MAIL.png)
+![HTML Template](https://github.com/sam-913/GitaMail-Samsiddhi/blob/2b2f72007eac074be2b70d3cc93da17d6a4bb033/demo_MAIL.png)
 ### To know more, you know where to reach us
 
 #### Contributers
