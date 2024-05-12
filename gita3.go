@@ -11,9 +11,7 @@ import (
 	"net/http"
 	"os"
 	"text/template"
-
 	"github.com/spf13/viper"
-
 	"gopkg.in/gomail.v2"
 )
 
@@ -34,11 +32,8 @@ func sendGoMail(templatePath string, Text string, to []string) error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", vi.GetString("mymail"))
 	m.SetHeader("To", to...)
-	// m.SetHeader("To", "terminateduser9@gmail.com")
-	// m.SetAddressHeader("Cc", "cc@gmail.com", "Name")
 	m.SetHeader("Subject", "Gita Verse")
 	m.SetBody("text/html", body.String())
-	//m.Attach("./kol.png")
 
 	d := gomail.NewDialer("smtp.gmail.com", 587, vi.GetString("mymail"), vi.GetString("mymailpassword"))
 	return d.DialAndSend(m)
@@ -68,8 +63,7 @@ func main() {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	// fmt.Println(res)
-	// fmt.Println(string(body))
+
 	var data map[string]interface{}
 	err := json.Unmarshal([]byte(body), &data)
 	if err != nil {
@@ -77,7 +71,6 @@ func main() {
 		return
 	}
 
-	// fmt.Printf("json map: %v\n", data)
 	rawText, ok := data["text"]
 	if !ok {
 		fmt.Printf("text does not exist\n")
