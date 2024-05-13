@@ -56,7 +56,6 @@ func main() {
 	vi.SetConfigFile("test.yaml")
 	vi.ReadInConfig()
 
-
 	req.Header.Add("X-RapidAPI-Key", vi.GetString("myapikey"))
 	req.Header.Add("X-RapidAPI-Host", "bhagavad-gita3.p.rapidapi.com")
 
