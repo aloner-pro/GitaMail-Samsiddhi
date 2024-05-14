@@ -37,14 +37,13 @@ type Idata struct {
 	} `json:"commentaries"`
 }
 
-func sendGoMail(templatePath string, Text string, to []string) error {
+func sendGoMail(templatePath string, data interface{}, to []string) error {
 	var body bytes.Buffer
 	t, err := template.ParseFiles(templatePath)
-	t.Execute(&body, struct{ Text string }{Text: Text})
-
+	// t.Execute(&body, struct{ Text string }{Text: Text})
+	err = t.Execute(&body, data)
 	if err != nil {
-		fmt.Println(err)
-		return nil
+		return err
 	}
 
 	vi := viper.New()
@@ -94,8 +93,21 @@ func main() {
 	}
 
 	rawText := idata.Text
-
 	fmt.Printf("%s\n", rawText)
+	var trans string
+	if idata.Trans[0].Lang == "english" {
+		trans = idata.Trans[0].Des
+		fmt.Printf("Meaning:\n %+v\n", trans)
+	}
+
+	data := struct {
+		Verse    string
+		Meaning string
+	}{
+		Verse:   idata.Text,
+		Meaning: trans,
+	}
+
 	emailsFile, err := os.Open("emails.txt")
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -112,7 +124,7 @@ func main() {
 		fmt.Println("Error reading file:", err)
 		return
 	}
-	err = sendGoMail("./OKTEST.html", rawText, to)
+	err = sendGoMail("./OKTEST.html", data, to)
 	if err != nil {
 		fmt.Println("Error sending email:", err)
 		return
