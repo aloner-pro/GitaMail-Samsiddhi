@@ -2,7 +2,10 @@ module go.mau.fi/whatsmeow
 
 go 1.20
 
-require gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
+require (
+	github.com/spf13/viper v1.18.2
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
@@ -16,7 +19,6 @@ require (
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.18.2 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect

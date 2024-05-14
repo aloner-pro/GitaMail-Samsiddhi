@@ -11,20 +11,39 @@ import (
 	"net/http"
 	"os"
 	"text/template"
-
 	"github.com/spf13/viper"
-
 	"gopkg.in/gomail.v2"
 )
 
-func sendGoMail(templatePath string, Text string, to []string) error {
+type Idata struct {
+	Id    float32 `json:"id"`
+	Vn    float32 `json:"verse_number"`
+	Cp    float32 `json:"chapter_number"`
+	Sl    string  `json:"slug"`
+	Text  string  `json:"text"`
+	Ts    string  `json:"transliteration"`
+	Wm    string  `json:"word_meanings"`
+	Trans []struct {
+		Id   float32 `json:"id"`
+		Des  string  `json:"description"`
+		Auth string  `json:"author_name"`
+		Lang string  `json:"language"`
+	} `json:"translations"`
+	Coms []struct {
+		Id   float32 `json:"id"`
+		Desp string  `json:"description"`
+		Au   string  `json:"author_name"`
+		Lg   string  `json:"language"`
+	} `json:"commentaries"`
+}
+
+func sendGoMail(templatePath string, data interface{}, to []string) error {
 	var body bytes.Buffer
 	t, err := template.ParseFiles(templatePath)
-	t.Execute(&body, struct{ Text string }{Text: Text})
-
+	// t.Execute(&body, struct{ Text string }{Text: Text})
+	err = t.Execute(&body, data)
 	if err != nil {
-		fmt.Println(err)
-		return nil
+		return err
 	}
 
 	vi := viper.New()
@@ -34,11 +53,8 @@ func sendGoMail(templatePath string, Text string, to []string) error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", vi.GetString("mymail"))
 	m.SetHeader("To", to...)
-	// m.SetHeader("To", "terminateduser9@gmail.com")
-	// m.SetAddressHeader("Cc", "cc@gmail.com", "Name")
 	m.SetHeader("Subject", "Gita Verse")
 	m.SetBody("text/html", body.String())
-	//m.Attach("./kol.png")
 
 	d := gomail.NewDialer("smtp.gmail.com", 587, vi.GetString("mymail"), vi.GetString("mymailpassword"))
 	return d.DialAndSend(m)
@@ -67,27 +83,30 @@ func main() {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	// fmt.Println(res)
-	// fmt.Println(string(body))
-	var data map[string]interface{}
-	err := json.Unmarshal([]byte(body), &data)
+
+	var idata Idata
+	err := json.Unmarshal(body, &idata)
 	if err != nil {
 		fmt.Printf("could not unmarshal json: %s\n", err)
 		return
 	}
 
-	// fmt.Printf("json map: %v\n", data)
-	rawText, ok := data["text"]
-	if !ok {
-		fmt.Printf("text does not exist\n")
-		return
+	rawText := idata.Text
+	fmt.Printf("%s\n", rawText)
+	var trans string
+	if idata.Trans[0].Lang == "english" {
+		trans = idata.Trans[0].Des
+		fmt.Printf("Meaning:\n %+v\n", trans)
 	}
-	text, ok := rawText.(string)
-	if !ok {
-		fmt.Printf("text is not a string\n")
-		return
+
+	data := struct {
+		Verse    string
+		Meaning string
+	}{
+		Verse:   idata.Text,
+		Meaning: trans,
 	}
-	fmt.Printf("%s\n", text)
+
 	emailsFile, err := os.Open("emails.txt")
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -104,7 +123,7 @@ func main() {
 		fmt.Println("Error reading file:", err)
 		return
 	}
-	err = sendGoMail("./OKTEST.html", text, to)
+	err = sendGoMail("./OKTEST.html", data, to)
 	if err != nil {
 		fmt.Println("Error sending email:", err)
 		return
