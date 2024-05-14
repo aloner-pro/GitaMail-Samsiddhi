@@ -15,6 +15,28 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
+type Idata struct {
+	Id    float32 `json:"id"`
+	Vn    float32 `json:"verse_number"`
+	Cp    float32 `json:"chapter_number"`
+	Sl    string  `json:"slug"`
+	Text  string  `json:"text"`
+	Ts    string  `json:"transliteration"`
+	Wm    string  `json:"word_meanings"`
+	Trans []struct {
+		Id   float32 `json:"id"`
+		Des  string  `json:"description"`
+		Auth string  `json:"author_name"`
+		Lang string  `json:"language"`
+	} `json:"translations"`
+	Coms []struct {
+		Id   float32 `json:"id"`
+		Desp string  `json:"description"`
+		Au   string  `json:"author_name"`
+		Lg   string  `json:"language"`
+	} `json:"commentaries"`
+}
+
 func sendGoMail(templatePath string, Text string, to []string) error {
 	var body bytes.Buffer
 	t, err := template.ParseFiles(templatePath)
@@ -64,24 +86,16 @@ func main() {
 	body, _ := io.ReadAll(res.Body)
 
 
-	var data map[string]interface{}
-	err := json.Unmarshal([]byte(body), &data)
+	var idata Idata
+	err := json.Unmarshal(body, &idata)
 	if err != nil {
 		fmt.Printf("could not unmarshal json: %s\n", err)
 		return
 	}
 
-	rawText, ok := data["text"]
-	if !ok {
-		fmt.Printf("text does not exist\n")
-		return
-	}
-	text, ok := rawText.(string)
-	if !ok {
-		fmt.Printf("text is not a string\n")
-		return
-	}
-	fmt.Printf("%s\n", text)
+	rawText := idata.Text
+
+	fmt.Printf("%s\n", rawText)
 	emailsFile, err := os.Open("emails.txt")
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -98,7 +112,7 @@ func main() {
 		fmt.Println("Error reading file:", err)
 		return
 	}
-	err = sendGoMail("./OKTEST.html", text, to)
+	err = sendGoMail("./OKTEST.html", rawText, to)
 	if err != nil {
 		fmt.Println("Error sending email:", err)
 		return
