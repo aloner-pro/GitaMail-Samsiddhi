@@ -128,7 +128,7 @@ func main() {
 		}
 	}
 
-	err = sendGoMail("./OKTEST.html", data, emails)
+	err = sendGoMail("./template.html", data, emails)
 	if err != nil {
 		fmt.Println("Error sending email:", err)
 		return
