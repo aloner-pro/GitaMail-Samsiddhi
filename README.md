@@ -16,6 +16,7 @@ Email service to send Gita verses.
 ### To know more, you know where to reach us
 
 Here is a rough workflow of the project.
+![workflow](https://github.com/aloner-pro/GitaMail-Samsiddhi/blob/main/workflow.png)
 
 #### Contributers
 
