@@ -1,10 +1,10 @@
-package airtable
+package main
 
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -209,7 +209,7 @@ func (c *Client) request(method string, endpoint string, body interface{}) (rawB
 	}
 	defer resp.Body.Close()
 	statusCode := resp.StatusCode
-	rawBody, err = ioutil.ReadAll(resp.Body)
+	rawBody, err = io.ReadAll(resp.Body)
 	if err != nil {
 		return []byte{}, err
 	}
