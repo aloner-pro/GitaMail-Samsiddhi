@@ -1,15 +1,21 @@
 # GitaMail
+Email service to send Gita verses.
 
- This system interacts with a Bhagavad Gita API to retrieve verses, processes them for readability, and formats them into a user-friendly email template. Finally, it automates the sending of the email, ensuring a daily dose of Bhagavad Gita wisdom reaches your inbox effortlessly. This project acts as a conduit between the timeless wisdom of the Gita and the contemporary world, offering easily accessible inspiration and guidance for everyday life.
+## Try it out [here](https://airtable.com/app2DrQEL9dCHB9MQ/pag9zgmrHgU6CXUBO/form) by filling the form
 
- <br>
- The name "Samsiddhi" beautifully conveys the essence of this project. In Sanskrit, it signifies prosperity, flourishing, and fulfillment. This aptly reflects the project's goal of helping devotees achieve spiritual prosperity by integrating the wisdom of the Bhagavad Gita into their daily lives.
+ This system interacts with a **Bhagavad Gita API** to retrieve verses, processes them for readability, and formats them into a user-friendly email template. Finally, it automates the sending of the email, where we have used **Airtable API** with Go wrapper, ensuring that a daily dose of Bhagavad Gita wisdom reaches your inbox effortlessly. This project acts as a conduit between the timeless wisdom of the Gita and the contemporary world, offering easily accessible inspiration and guidance for everyday life.
 
-## It looks like this
+### Meaning
+
+ The name **Samsiddhi** beautifully conveys the essence of this project. In Sanskrit, it signifies prosperity, flourishing, and fulfillment. This aptly reflects the project's goal of helping devotees achieve spiritual prosperity by integrating the wisdom of the Bhagavad Gita into their daily lives.
+
+## How does it look like in your mail?
 
 ![HTML Template](https://github.com/sam-913/GitaMail-Samsiddhi/blob/2b2f72007eac074be2b70d3cc93da17d6a4bb033/demo_MAIL.png)
 
 ### To know more, you know where to reach us
+
+Here is a rough workflow of the project.
 
 #### Contributers
 
