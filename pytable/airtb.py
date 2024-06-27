@@ -16,3 +16,4 @@ def get_mail(data):
 
     return mail_list
 
+print(get_mail(data))
