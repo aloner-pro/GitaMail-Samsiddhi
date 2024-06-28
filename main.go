@@ -36,26 +36,44 @@ type Idata struct {
 }
 
 func sendGoMail(templatePath string, data interface{}, to []string) error {
-	var body bytes.Buffer
+	// Parse the email template
 	t, err := template.ParseFiles(templatePath)
-	// t.Execute(&body, struct{ Text string }{Text: Text})
-	err = t.Execute(&body, data)
 	if err != nil {
 		return err
 	}
 
+	// Load the configuration
 	vi := viper.New()
 	vi.SetConfigFile("test.yaml")
-	vi.ReadInConfig()
+	err = vi.ReadInConfig()
+	if err != nil {
+		return err
+	}
 
-	m := gomail.NewMessage()
-	m.SetHeader("From", vi.GetString("mymail"))
-	m.SetHeader("To", to...)
-	m.SetHeader("Subject", "Gita Verse")
-	m.SetBody("text/html", body.String())
-
+	// Create a new dialer
 	d := gomail.NewDialer("smtp.gmail.com", 587, vi.GetString("mymail"), vi.GetString("mymailpassword"))
-	return d.DialAndSend(m)
+
+	// Send email to each recipient individually
+	for _, recipient := range to {
+		var body bytes.Buffer
+		err := t.Execute(&body, data)
+		if err != nil {
+			return err
+		}
+
+		m := gomail.NewMessage()
+		m.SetHeader("From", vi.GetString("mymail"))
+		m.SetHeader("To", recipient)
+		m.SetHeader("Subject", "Gita Verse")
+		m.SetBody("text/html", body.String())
+
+		err = d.DialAndSend(m)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func main() {
@@ -127,6 +145,8 @@ func main() {
 			emails = append(emails, t.Fields.Email)
 		}
 	}
+
+	fmt.Println("All emails:", emails)
 
 	err = sendGoMail("./template.html", data, emails)
 	if err != nil {
