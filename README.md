@@ -1,4 +1,5 @@
 # GitaMail
+
 Email service to send Gita verses.
 
 ## Try it out [here](https://airtable.com/app2DrQEL9dCHB9MQ/pag9zgmrHgU6CXUBO/form) by filling the form
@@ -11,7 +12,7 @@ Email service to send Gita verses.
 
 ## How does it look like in your mail?
 
-![HTML Template](https://github.com/sam-913/GitaMail-Samsiddhi/blob/2b2f72007eac074be2b70d3cc93da17d6a4bb033/demo_MAIL.png)
+![HTML Template](https://pbs.twimg.com/media/GRHGbhmXEAA2Eca?format=png&name=900x900)
 
 ### To know more, you know where to reach us
 
